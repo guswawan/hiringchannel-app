@@ -1,0 +1,23 @@
+{
+  "name": "hiring-channel-app",
+  "version": "1.0.0",
+  "description": "backend hiring channel app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server"
+  },
+  "author": "gwwn",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "mysql": "^2.17.1"
+  },
+  "devDependencies": {
+    "morgan": "^1.9.1"
+  }
+}
