@@ -14,6 +14,19 @@ module.exports = {
         console.log (err);
       });
   },
+  getCompany: (req, res) => {
+    const {id} = req.params;
+    model
+      .getCompany (id)
+      .then (result => {
+        //resolve
+        form.success (res, result);
+      })
+      .catch (err => {
+        //reject
+        console.log (err);
+      });
+  },
   postCompany: (req, res) => {
     const {body} = req;
     //console.log("body", body)

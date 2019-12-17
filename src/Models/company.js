@@ -12,6 +12,18 @@ module.exports = {
       });
     });
   },
+  getCompany: (id) => {
+    return new Promise ((resolve, reject) => {
+      const sql = 'SELECT * FROM t_company WHERE id=?';
+      db.query (sql, id,(err, result) => {
+        if (!err) {
+          resolve (result);
+        } else {
+          reject (err);
+        }
+      });
+    });
+  },
   postCompany: body => {
     return new Promise ((resolve, reject) => {
       const values = [body.name_company,body.logo,body.location,body.description];
