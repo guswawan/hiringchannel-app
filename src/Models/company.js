@@ -12,10 +12,12 @@ module.exports = {
       });
     });
   },
-  postCompany: data => {
+  postCompany: body => {
     return new Promise ((resolve, reject) => {
-      const sql = 'INSERT INTO t_company SET ?'
-      db.query (sql, data, (err, result) => {
+      const values = [body.name_company,body.logo,body.location,body.description];
+      const sql = 'INSERT INTO t_company (name_company,logo,location,description) VALUES ( ? )';
+      // console.log("values", values)
+      db.query (sql,[values], (err, result) => {
           if (!err) {
             resolve (result);
           } else {
@@ -23,7 +25,7 @@ module.exports = {
           }
         }
       );
-    });
+    })
   },
   patchCompany: (query, params) => {
     return new Promise ((resolve, reject) => {

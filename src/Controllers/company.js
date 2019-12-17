@@ -15,20 +15,20 @@ module.exports = {
       });
   },
   postCompany: (req, res) => {
-    const {name_company, logo, location, description} = req.body;
-    const data = {name_company, logo, location, description};
-    console.log(data)
+    const {body} = req;
+    //console.log("body", body)
     model
-      .postCompany (data)
+      .postCompany (body)
       .then (result => {
-        //resolve
+        // resolve
         const data = {
           id: result.insertId,
-          name_company: req.body.name_company,
-          logo: req.body.logo,
-          location: req.body.location,
-          description: req.body.description
+          name_company: body.name_company,
+          logo: body.logo,
+          location: body.location,
+          description: body.description
         };
+        console.log("data", data)
         form.success (res, data);
       })
       .catch (err =>
@@ -36,6 +36,28 @@ module.exports = {
         console.log (err)
       );
   },
+  // postCompany: (req, res) => {
+  //   const { name_company, logo, location, description } = req.body;
+  //   const data = { name_company, logo, location, description };
+  //   console.log(data)
+  //   model
+  //     .postCompany (data)
+  //     .then (result => {
+  //       //resolve
+  //       const data = {
+  //         id: result.insertId,
+  //         name_company : name_company,
+  //         logo : logo,
+  //         location : location,
+  //         description : description
+  //       };
+  //       form.success (res, data);
+  //     })
+  //     .catch (err =>
+  //       // reject
+  //       console.log (err)
+  //     );
+  // },
   patchCompany: (req, res) => {
     const {params, query} = req;
     // res.json ({

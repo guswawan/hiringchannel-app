@@ -1,4 +1,5 @@
 const db = require ('../Configs/db');
+
 module.exports = {
   getAllEngineer: () => {
     return new Promise ((resolve, reject) => {
@@ -12,10 +13,12 @@ module.exports = {
       });
     });
   },
-  postEngineer: data => {
+  postEngineer: body => {
     return new Promise ((resolve, reject) => {
-      const sql = 'INSERT INTO t_engineer SET ?';
-      db.query (sql, data, (err, result) => {
+      const values = [body.name_engineer, body.description, body.location, body.birth, body.date_created, body.date_updated];
+      const sql = 'INSERT INTO t_engineer (name_engineer,description,location,birth,date_created,date_updated) VALUES ( ? )';
+      console.log("values", values)
+      db.query (sql, [values], (err, result) => {
           if (!err) {
             resolve (result);
           } else {

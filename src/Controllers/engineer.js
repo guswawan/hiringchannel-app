@@ -14,24 +14,22 @@ module.exports = {
         console.log (err);
       });
   },
-  //===POST ENGINEER STUCK===
   postEngineer: (req, res) => {
-    const {name_engineer, description, location, birth, date_created, date_updated} = req.body;
-    const data = {name_engineer, description, location, birth, date_created, date_updated};
-    console.log(data)
+    const {body} = req;
     model
-      .postEngineer (data)
+      .postEngineer (body)
       .then (result => {
         //resolve
         const data = {
           id: result.insertId,
-          name_engineer: name_company,
-          description: description,
-          location: location,
-          birth: birth,
-          date_created: new Date.now(),
-          date_updated: new Date.now()
+          name_engineer: body.name_engineer,
+          description: body.description,
+          location: body.location,
+          birth: body.birth,
+          date_created: Date.now(),
+          date_updated: Date.now()
         };
+        console.log("data", data)
         form.success (res, data);
       })
       .catch (err =>
@@ -39,7 +37,6 @@ module.exports = {
         console.log (err)
       );
   },
-  //===END POST ENGINEER STUCK===
   patchEngineer: (req, res) => {
     const {params, query} = req;
     // res.json ({
