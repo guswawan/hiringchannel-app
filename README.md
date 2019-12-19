@@ -1,1 +1,1 @@
-# hiringchannel-app
+# api-hiringchannel-app
