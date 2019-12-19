@@ -30,9 +30,11 @@ module.exports = {
   },
   postUser: user => {
     return new Promise ((resolve, reject) => {
-      //const values = [body.username,body.password,body.role];
-      const sql = 'INSERT INTO user SET ?';
+      //const values = [user.username,user.password,user.role];
+      const sql = `INSERT INTO user SET ?`;
+      //const sql2 = 'INSET INTO user SET ? SELECT ? WHERE NOT EXIST(SELECT * FROM user WHERE username=?)'
       console.log("values", user)
+      //console.log("sql2 ",sql2);
       db.query (sql, user, (err, result) => {
           if (!err) {
             resolve (result);
@@ -41,6 +43,18 @@ module.exports = {
           }
         }
       );
+    })
+  },
+  userCheck: (username) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT username FROM user WHERE username = ?'
+        db.query(sql, username, (err, results) => {
+            if (!err) {
+                resolve(results)
+            } else {
+                reject(err)
+            }
+        })
     })
   },
   patchUser: (query, params) => {

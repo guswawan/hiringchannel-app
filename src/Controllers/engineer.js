@@ -15,10 +15,15 @@ module.exports = {
       });
   },
   getEngineer: (req, res) => {
-    const {id} =req.params
-    // console.log("id", id)
+    // console.log("req ", res)
+    // // const {id} =req.params;
+    const {name_engineer, skill, limit, page, sorbBy, order} = req.query;
+    // //const {query} = req;
+    const data = { name_engineer,skill,limit,page,sorbBy, order };
+    console.log("query data C", data);
+    // // console.log("id", id)
     model
-      .getEngineer (id)
+      .getEngineer (data)
       .then (result => {
         //resolve
         form.success (res, result);
@@ -85,46 +90,46 @@ module.exports = {
         console.log (err)
       );
   },
-  findEngineer: (req, res) => {
-    const {query} = req;
-    console.log("query ", query)
-    // console.log("skill ", skill)
-    model
-      .findEngineer(query)
-      .then(result => {
-        console.log("result ",result)
-          res.json({result})
-      })
-      .catch(err => {
-          res.json({err})
-      })
-    },
-    // sortEngineer: (req, res) => {
-    //   const {query} = req;
-    //   console.log("query ", query)
-    //   // console.log("skill ", skill)
-    //   model
-    //     .findEngineer(query)
-    //     .then(result => {
-    //       console.log("result ",result)
-    //         res.json({result})
-    //     })
-    //     .catch(err => {
-    //         res.json({err})
-    //     })
-    //   },
-    pagesEngineer: (req, res) => {
-      const {query} = req;
-      console.log("query ", query)
-      // console.log("skill ", skill)
-      // model
-      //   .findEngineer(query)
-      //   .then(result => {
-      //     console.log("result ",result)
-      //       res.json({result})
-      //   })
-      //   .catch(err => {
-      //       res.json({err})
-      //   })
-      },
+  // findEngineer: (req, res) => {
+  //   const {query} = req;
+  //   console.log("query ", query)
+  //   // console.log("skill ", skill)
+  //   model
+  //     .findEngineer(query)
+  //     .then(result => {
+  //       console.log("result ",result)
+  //         res.json({result})
+  //     })
+  //     .catch(err => {
+  //         res.json({err})
+  //     })
+  //   },
+  //   // sortEngineer: (req, res) => {
+  //   //   const {query} = req;
+  //   //   console.log("query ", query)
+  //   //   // console.log("skill ", skill)
+  //   //   model
+  //   //     .findEngineer(query)
+  //   //     .then(result => {
+  //   //       console.log("result ",result)
+  //   //         res.json({result})
+  //   //     })
+  //   //     .catch(err => {
+  //   //         res.json({err})
+  //   //     })
+  //   //   },
+  //   pagesEngineer: (req, res) => {
+  //     const {query} = req;
+  //     console.log("query ", query)
+  //     // console.log("skill ", skill)
+  //     // model
+  //     //   .findEngineer(query)
+  //     //   .then(result => {
+  //     //     console.log("result ",result)
+  //     //       res.json({result})
+  //     //   })
+  //     //   .catch(err => {
+  //     //       res.json({err})
+  //     //   })
+  //     },
 };

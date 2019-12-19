@@ -13,10 +13,41 @@ module.exports = {
       });
     });
   },
-  getEngineer: (id) => {
+  getEngineer: data => {
+    console.log("query query M ", data)
+
+    var pages = ``
+    var find = ''
+    var sortBy = ''
+    var order = ''
+
+    if(data.limit != undefined && data.page != undefined) {
+      data.page = data.limit*(data.page-1)
+      pages = `LIMIT ${data.limit} OFFSET ${data.page}`
+    }
+
+    if(data.name_engineer != undefined) {
+      find = `WHERE t_engineer.name_engineer LIKE '%${data.name_engineer}%'`
+    } else if (data.skill != undefined) {
+      find = `WHERE t_skill.skill_item LIKE '%${data.skill}%'`
+    }
+
+    if(data.sortBy == 'skill') {
+      sortBy = `ORDER BY COUNT(DISTINCT t_skill.skill_item)`
+    } else if (data.sortBy != undefined) {
+      sortBy = `ORDER BY ${data.sortBy}`
+    }
+
+    if(data.order != undefined) {
+      order = `ORDER BY ${data.order}`
+    }
+
     return new Promise ((resolve, reject) => {
-      const sql = "SELECT t_engineer.id,t_engineer.name_engineer, t_engineer.description, GROUP_CONCAT(DISTINCT(t_skill.skill_item) SEPARATOR ', ') AS skill, t_engineer.location, t_engineer.birth, GROUP_CONCAT(DISTINCT(t_showcase.showcase_item) SEPARATOR ', ') AS link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id INNER JOIN t_showcase ON t_showcase.id_engineer = t_engineer.id WHERE t_engineer.id=?";
-      db.query (sql, id, (err, result) => {
+      const sql = `SELECT t_engineer.id,t_engineer.name_engineer, t_engineer.description, GROUP_CONCAT(DISTINCT(t_skill.skill_item) SEPARATOR ', ') AS skill, t_engineer.location, t_engineer.birth, GROUP_CONCAT(DISTINCT(t_showcase.showcase_item) SEPARATOR ', ') AS link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id INNER JOIN t_showcase ON t_showcase.id_engineer = t_engineer.id 
+      ${find} GROUP BY t_engineer.id 
+      ${pages} ${sortBy} ${order}`;
+      console.log("sql ",sql)
+      db.query (sql, (err, result) => {
         if (!err) {
           resolve (result);
         } else {
@@ -69,21 +100,22 @@ module.exports = {
       );
     });
   },
-  findEngineer: (query) => {
-    return new Promise ((resolve, reject) => {
-      const name = query.name;
-      const skill = query.skill;
-      const sql = "SELECT t_engineer.id, t_engineer.name_engineer, t_engineer.description, GROUP_CONCAT(DISTINCT t_skill.skill_item) AS skills, t_engineer.location, t_engineer.birth, GROUP_CONCAT(DISTINCT t_showcase.showcase_item) AS link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer INNER JOIN t_skill ON t_skill.id_engineer=t_engineer.id INNER JOIN t_showcase ON t_showcase.id_engineer=t_engineer.id WHERE t_engineer.name_engineer LIKE '%"+name+"%' OR t_skill.skill_item LIKE '%"+skill+"%'";
-      console.log("SQL ", sql)
-      db.query (sql, (err, result) => {
-        if (!err) {
-          resolve (result);
-        } else {
-          reject (err);
-        }
-      });
-    });
-  },
+  
+  // findEngineer: (query) => {
+  //   return new Promise ((resolve, reject) => {
+  //     const name = query.name;
+  //     const skill = query.skill;
+  //     const sql = "SELECT t_engineer.id, t_engineer.name_engineer, t_engineer.description, GROUP_CONCAT(DISTINCT t_skill.skill_item) AS skills, t_engineer.location, t_engineer.birth, GROUP_CONCAT(DISTINCT t_showcase.showcase_item) AS link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer INNER JOIN t_skill ON t_skill.id_engineer=t_engineer.id INNER JOIN t_showcase ON t_showcase.id_engineer=t_engineer.id WHERE t_engineer.name_engineer LIKE '%"+name+"%' OR t_skill.skill_item LIKE '%"+skill+"%'";
+  //     console.log("SQL ", sql)
+  //     db.query (sql, (err, result) => {
+  //       if (!err) {
+  //         resolve (result);
+  //       } else {
+  //         reject (err);
+  //       }
+  //     });
+  //   });
+  // },
   // sortEngineer: (query) => {
   //   return new Promise ((resolve, reject) => {
   //     const name = query.name;
@@ -99,19 +131,19 @@ module.exports = {
   //     });
   //   });
   // },
-  pageEngineer: (query) => {
-    return new Promise ((resolve, reject) => {
-      const {limit,page} = query;
-      page = limit*(page-1);
-      const sql = `SELECT t_engineer.id, t_engineer.name_engineer, t_engineer.description, GROUP_CONCAT(DISTINCT t_skill.skill_item) AS skills, t_engineer.location, t_engineer.birth, GROUP_CONCAT(DISTINCT t_showcase.showcase_item) AS link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer INNER JOIN t_skill ON t_skill.id_engineer=t_engineer.id INNER JOIN t_showcase ON t_showcase.id_engineer=t_engineer.id GROUP BY t_engineer.id LIMIT ${limit} OFFSET ${page}`;
-      console.log("SQL ", sql)
-      db.query (sql, (err, result) => {
-        if (!err) {
-          resolve (result);
-        } else {
-          reject (err);
-        }
-      });
-    });
-  },
+  // pageEngineer: (query) => {
+  //   return new Promise ((resolve, reject) => {
+  //     const {limit,page} = query;
+  //     page = limit*(page-1);
+  //     const sql = `SELECT t_engineer.id, t_engineer.name_engineer, t_engineer.description, GROUP_CONCAT(DISTINCT t_skill.skill_item) AS skills, t_engineer.location, t_engineer.birth, GROUP_CONCAT(DISTINCT t_showcase.showcase_item) AS link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer INNER JOIN t_skill ON t_skill.id_engineer=t_engineer.id INNER JOIN t_showcase ON t_showcase.id_engineer=t_engineer.id GROUP BY t_engineer.id LIMIT ${limit} OFFSET ${page}`;
+  //     console.log("SQL ", sql)
+  //     db.query (sql, (err, result) => {
+  //       if (!err) {
+  //         resolve (result);
+  //       } else {
+  //         reject (err);
+  //       }
+  //     });
+  //   });
+  // },
 };

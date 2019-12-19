@@ -1,7 +1,7 @@
 const jwt = require ('jsonwebtoken');
 
 module.exports = {
-  verifyToken:  (req, res, next) => {
+  verifyCompany:  (req, res, next) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401)
@@ -12,5 +12,15 @@ module.exports = {
         next()
     })
   },
-  
+  verifyEngineer:  (req, res, next) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if (token == null) return res.sendStatus(401)
+    
+    jwt.verify(token, process.env.ENG_SECRET_KEY, (err, user) => {
+        if(err) return res.sendStatus(403)
+        req.user = user
+        next()
+    })
+  },
 };
