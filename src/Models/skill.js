@@ -21,9 +21,9 @@ module.exports = {
     return new Promise ((resolve, reject) => {
       console.log("id enginere ",params.id_engineer)
       console.log("id skill ",params.id_skill)
-      const sql = 'UPDATE t_skill SET ? WHERE id_engineer=?';
+      const sql = 'UPDATE t_skill SET ? WHERE id_skill=?';
       console.log("sql", sql)
-      db.query (sql, [query, params.id_skill, params.id_engineer], (err, result) => {
+      db.query (sql, [query, params.id_engineer, params.id_skill], (err, result) => {
           if (!err) {
             resolve (result);
           } else {

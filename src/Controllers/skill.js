@@ -38,7 +38,7 @@ module.exports = {
         console.log (err)
       );
   },
-  //=== BUG ===
+  //=== END BUG ===
   deleteSkillEngineer: (req, res) => {
     const {id_skill} = req.params;
     // res.json ({

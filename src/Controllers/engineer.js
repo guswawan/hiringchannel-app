@@ -40,8 +40,8 @@ module.exports = {
           description: body.description,
           location: body.location,
           birth: body.birth,
-          date_created: Date.now(),
-          date_updated: Date.now()
+          date_created: new Date(),
+          date_updated: new Date()
         };
         console.log("data", data)
         form.success (res, data);
@@ -85,28 +85,46 @@ module.exports = {
         console.log (err)
       );
   },
-  
-  postSkillEngineer: (req, res) => {
-    const {params} = req;
-    const {body} = req;
-    // console.log("body", body)
-    // console.log("id params controller", params)
+  findEngineer: (req, res) => {
+    const {query} = req;
+    console.log("query ", query)
+    // console.log("skill ", skill)
     model
-      .postSkillEngineer (body, params)
-      .then (result => {
-        //resolve
-        // const data = {
-        //   id_skill: result.insertId,
-        //   skill_item: body.skill_item,
-        //   id_engineer: params.id_engineer
-        // };
-        // console.log("data", data)
-        // form.success (res, data);
-        res.json(result)
+      .findEngineer(query)
+      .then(result => {
+        console.log("result ",result)
+          res.json({result})
       })
-      .catch (err =>
-        // reject
-        console.log (err)
-      );
-  },
+      .catch(err => {
+          res.json({err})
+      })
+    },
+    // sortEngineer: (req, res) => {
+    //   const {query} = req;
+    //   console.log("query ", query)
+    //   // console.log("skill ", skill)
+    //   model
+    //     .findEngineer(query)
+    //     .then(result => {
+    //       console.log("result ",result)
+    //         res.json({result})
+    //     })
+    //     .catch(err => {
+    //         res.json({err})
+    //     })
+    //   },
+    pagesEngineer: (req, res) => {
+      const {query} = req;
+      console.log("query ", query)
+      // console.log("skill ", skill)
+      // model
+      //   .findEngineer(query)
+      //   .then(result => {
+      //     console.log("result ",result)
+      //       res.json({result})
+      //   })
+      //   .catch(err => {
+      //       res.json({err})
+      //   })
+      },
 };
