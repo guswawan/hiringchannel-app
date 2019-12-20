@@ -6,8 +6,7 @@ const router = express.Router ();
 
 
 router.post ('/login', controller.login); // localhost:5000/v1/login/
-router.get ('/', controller.getAllUser); // localhost:5000/v1/user
-router.get ('/:id', controller.getUser); // localhost:5000/v1/user/:id/
+router.get ('/', controller.getUser); // localhost:5000/v1/user
 router.post ('/', controller.postUser); // localhost:5000/v1/user/
 
 router.patch ('/:id', controller.patchUser); // localhost:5000/user/:id

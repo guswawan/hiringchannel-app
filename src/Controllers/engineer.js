@@ -2,10 +2,12 @@ const model = require ('../Models/engineer');
 const form = require ('../Helpers/form');
 
 module.exports = {
-  getAllEngineer: (_, res) => {
+  getAllEngineer: (req, res) => {
+    const {name_engineer, skill, limit, page, sorbBy, order} = req.query;
+    const data = { name_engineer,skill,limit,page,sorbBy, order };
     model
-      .getAllEngineer ()
-      .then (result => {
+      .getAllEngineer (data)
+      .then (result=> {
         //resolve
         form.success (res, result);
       })
@@ -14,17 +16,11 @@ module.exports = {
         console.log (err);
       });
   },
-  getEngineer: (req, res) => {
-    // console.log("req ", res)
-    // // const {id} =req.params;
-    const {name_engineer, skill, limit, page, sorbBy, order} = req.query;
-    // //const {query} = req;
-    const data = { name_engineer,skill,limit,page,sorbBy, order };
-    console.log("query data C", data);
-    // // console.log("id", id)
+  getProfilEngineer: (req, res) => {
+  
     model
-      .getEngineer (data)
-      .then (result => {
+      .getAllEngineer ()
+      .then (result=> {
         //resolve
         form.success (res, result);
       })
@@ -45,6 +41,7 @@ module.exports = {
           description: body.description,
           location: body.location,
           birth: body.birth,
+          link_showcase: body.link_showcase,
           date_created: new Date(),
           date_updated: new Date()
         };

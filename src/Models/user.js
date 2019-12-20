@@ -1,10 +1,12 @@
 const db = require ('../Configs/db');
 
 module.exports = {
-  getAllUser: () => {
+  getUser: () => {
     return new Promise ((resolve, reject) => {
-      const sql = 'SELECT * FROM user';
+      const sql = "SELECT * FROM user"
+      console.log("sql",sql)
       db.query (sql, (err, result) => {
+        console.log("result ",result)
         if (!err) {
           resolve (result);
         } else {
@@ -13,12 +15,12 @@ module.exports = {
       });
     });
   },
-  getUser: username => {
+  getUserLogin: username => {
     return new Promise ((resolve, reject) => {
       console.log("username ", username)
-      const sql = `SELECT * FROM user WHERE username=?`
+      const sql = `SELECT * FROM user WHERE username='${username}'`
       console.log("sql", sql)
-      db.query (sql, username,(err, result) => {
+      db.query (sql, (err, result) => {
         console.log("result", result)
         if(!err) {
           resolve(result)

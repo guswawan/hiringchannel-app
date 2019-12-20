@@ -2,6 +2,19 @@ const model = require ('../Models/skill');
 const form = require ('../Helpers/form');
 
 module.exports = {
+  getSkillEngineer: (_, res) => {
+    
+    model
+      .getSkillEngineer ()
+      .then (result => {
+        //resolve
+        res.json(result)
+      })
+      .catch (err =>
+        // reject
+        console.log (err)
+      );
+  },
   postSkillEngineer: (req, res) => {
     const {params} = req;
     const {body} = req;
@@ -28,7 +41,7 @@ module.exports = {
     //   query,
     // });
     model
-      .patchSkillEngineer (query, params)
+      .patchSkillEngineer (params, query)
       .then (result => {
         //resolve
         res.json (result);
@@ -40,13 +53,13 @@ module.exports = {
   },
   //=== END BUG ===
   deleteSkillEngineer: (req, res) => {
-    const {id_skill} = req.params;
+    const {params} = req;
     // res.json ({
     //   params,
     //   query,
     // });
     model
-      .deleteSkillEngineer (id_skill)
+      .deleteSkillEngineer (params)
       .then (result => {
         //resolve
         res.json (result);

@@ -1,6 +1,20 @@
 const db = require ('../Configs/db');
 
 module.exports = {
+  getSkillEngineer: () => {
+    return new Promise ((resolve, reject) => {
+      const sql = 'SELECT * FROM t_skill' ;
+      console.log("sql", sql)
+      db.query (sql, (err, result) => {
+          if (!err) {
+            resolve (result);
+          } else {
+            reject (err);
+          }
+        }
+      );
+    });
+  },
   postSkillEngineer: (body, params) => {
     return new Promise ((resolve, reject) => {
       console.log("params id ", params.id)
@@ -16,14 +30,13 @@ module.exports = {
       );
     });
   },
-  //=== BUG ===
-  patchSkillEngineer: (query, params) => {
+  patchSkillEngineer: (params, query) => {
     return new Promise ((resolve, reject) => {
       console.log("id enginere ",params.id_engineer)
-      console.log("id skill ",params.id_skill)
-      const sql = 'UPDATE t_skill SET ? WHERE id_skill=?';
+      console.log("id skill ",query.skill_item)
+      const sql = `UPDATE t_skill SET skill_item='${query.skill_item}' WHERE id_engineer='${params.id_engineer}'`;
       console.log("sql", sql)
-      db.query (sql, [query, params.id_engineer, params.id_skill], (err, result) => {
+      db.query (sql, (err, result) => {
           if (!err) {
             resolve (result);
           } else {
@@ -33,11 +46,10 @@ module.exports = {
       );
     });
   },
-  //=== END BUG ===
-  deleteSkillEngineer: (id_skill) => {
+  deleteSkillEngineer: (params) => {
     return new Promise ((resolve, reject) => {
-      const sql = `DELETE FROM t_skill WHERE id_skill = ?`;
-      db.query (sql, id_skill, (err, result) => {
+      const sql = `DELETE FROM t_skill WHERE id_skill ='${params.id_skill}'`;
+      db.query (sql, (err, result) => {
           if (!err) {
             resolve (result);
           } else {

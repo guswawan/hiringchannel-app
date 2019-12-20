@@ -4,25 +4,17 @@ const bcrypt = require ('bcryptjs');
 const jwt = require ('jsonwebtoken');
 
 module.exports = {
-  getAllUser: (_, res) => {
-    model
-      .getAllUser ()
-      .then (result => {
-        //resolve
-        form.success (res, result);
-      })
-      .catch (err => {
-        //reject
-        console.log (err);
-      });
-  },
   getUser: (req, res) => {
-    const {id} = req.params;
     model
-      .getUser (id)
+      .getUser ()
       .then (result => {
+        console.log("result", result)
+        console.log("result", result[1].username)
+        console.log("result1", req.user.username)
+        
         //resolve
-        form.success (res, result);
+        // form.success (res, result);
+        
       })
       .catch (err => {
         //reject
@@ -33,17 +25,10 @@ module.exports = {
     const {username, password, role} = req.body;
     console.log("req body ", req.body)
     const reU = /^[A-Z0-9_-]{4,}$/
-    // const reP = /^[a-z0-9_-]{6,}$/
-    // const validatePass = reP.test(password)
-    // console.log("passwordvalid ", validatePass)
     const hashedPassword = bcrypt.hashSync(password, 8);
     const user = {username: username, password: hashedPassword, role: role};
   
     if (reU.test(username)) {
-      // if (reP.test(password) == true) {
-      //   bcrypt.hashSync(password, 8, (err, hashedPassword) => {
-      //       const user = {username: username, password: hashedPassword, role: role};
-      //       console.log("body", user)
 
             model
             .postUser (user)
@@ -124,7 +109,7 @@ module.exports = {
         })
     }else{
         model
-        .getUser(username)
+        .getUserLogin(username)
         .then(result=>{
             const role = result[0].role;
             const validatePassword = bcrypt.compareSync(password, result[0].password)
@@ -141,7 +126,7 @@ module.exports = {
                   })
               })
             } else if(role == 'engineer'){
-              jwt.sign({result}, process.env.ENG_SECRET_KEY, {expiresIn: '1h'}, (err, token)=>{
+              jwt.sign({result}, process.env.SECRET_KEY, {expiresIn: '1h'}, (err, token)=>{
                 res.json({
                     message:'Engineer login success..',
                     data: result[0],
