@@ -15,17 +15,17 @@ module.exports = {
   },
   getUser: username => {
     return new Promise ((resolve, reject) => {
-      const sql = "SELECT * FROM user WHERE username = ?";
-      //console.log("sql", sql)
+      console.log("username ", username)
+      const sql = `SELECT * FROM user WHERE username=?`
+      console.log("sql", sql)
       db.query (sql, username,(err, result) => {
-        if (!err) {
-          //console.log("result M ", result)
-          resolve (result);
-
-        } else {
-          reject (err);
+        console.log("result", result)
+        if(!err) {
+          resolve(result)
+        }else{
+          reject(err)
         }
-      });
+      })
     });
   },
   postUser: user => {
@@ -45,18 +45,24 @@ module.exports = {
       );
     })
   },
-  userCheck: (username) => {
-    return new Promise((resolve, reject) => {
-      const sql = 'SELECT username FROM user WHERE username = ?'
-        db.query(sql, username, (err, results) => {
-            if (!err) {
-                resolve(results)
-            } else {
-                reject(err)
-            }
-        })
-    })
-  },
+  // userCheck: (username) => {
+  //   return new Promise((resolve, reject) => {
+  //     const sql = 'SELECT username FROM user WHERE username = ?'
+  //     console.log("sql ",sql)
+  //       db.query(sql, username, (err, result) => {
+  //         // if(result.length == 0 ) {
+
+  //         // }
+  //         console.log("username M ",result)
+  //           if (!err) {
+  //               resolve(result)
+  //               console.log("result M ", result)
+  //           } else {
+  //               reject(err)
+  //           }
+  //       })
+  //   })
+  // },
   patchUser: (query, params) => {
     return new Promise ((resolve, reject) => {
       const sql = 'UPDATE user SET ? WHERE ?'

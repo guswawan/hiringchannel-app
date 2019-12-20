@@ -30,75 +30,16 @@ module.exports = {
       });
   },
   postUser: (req, res) => {
-    // const {username, password, role} = req.body
-    // const reU = /^[A-Z0-9_-]{4,}$/
-    // // const reP = /^[a-z0-9_-]{6,}$/
-    // const reP = /^[0-9]{2}[&|@][A-Z]{4}$/
-    
-    // model
-    // .userCheck(username)
-    // .then(resultQuery => {
-    //   if (resultQuery.length == 0) {
-    //     if (reU.test(username) == true){
-    //       if (reP.test(password) == true){
-    //         bcrypt.hashSync(password, 8, (_, hashedPassword) => {
-    //           const data = { username, password: hashedPassword, role }
-    //           console.log("data ",data)
-    
-    //             model
-    //               .postUser(data)
-    //               .then(resultQuery => {
-    //                 console.log("resulta ",results)
-    //                   res.json({
-    //                       status: 200,
-    //                       message: 'Registration success.',
-    //                       data: data
-    //                   })
-    //               })
-    //               .catch(err => {
-    //                   console.log(err)
-    //                   res.status(400).json({
-    //                       status: 400,
-    //                       message: 'Registration failed.'
-    //                   })
-    //               })
-    //             })
-    //           }else{
-    //             res.json({
-    //               message: 'Password not valid.',
-    //             })
-    //           }
-    //         }else{
-    //           res.json({
-    //             message: 'Username not valid',
-    //           })
-    //         } 
-    //       }else {
-    //         res.status(400).json({
-    //             status: 400,
-    //             message: 'Username already exist'
-    //         })
-    //         }
-    //     })
-    //       .catch(err => {
-    //           res.status(400).json({
-    //               status: 400,
-    //               message: 'error'
-    //           })
-    //     })
-    ////==================///
     const {username, password, role} = req.body;
+    console.log("req body ", req.body)
     const reU = /^[A-Z0-9_-]{4,}$/
     // const reP = /^[a-z0-9_-]{6,}$/
-    // const reP = /^[0-9]{2}[&|@][A-Z]{4}$/
-    // const passwordvalid = reP.test(password)
+    // const validatePass = reP.test(password)
+    // console.log("passwordvalid ", validatePass)
     const hashedPassword = bcrypt.hashSync(password, 8);
     const user = {username: username, password: hashedPassword, role: role};
-    // console.log("regex username ", regExUsername.test(username))
-   
-    
-      // console.log("body", user)
-     if (reU.test(username)) {
+  
+    if (reU.test(username)) {
       // if (reP.test(password) == true) {
       //   bcrypt.hashSync(password, 8, (err, hashedPassword) => {
       //       const user = {username: username, password: hashedPassword, role: role};
@@ -174,48 +115,86 @@ module.exports = {
   },
 
   login: (req, res) => {
-    const {username} = req.body;
-    
 
-    model
-      .getUser(username)
-      .then (result => {
-        //resolve
-        // res.json (result)
-
-        const {password, username} = req.body;
-        const user = {name: username}
-        const hashedPassword = result[0].password;
-        const role = result[0].role;
-         
-       if (bcrypt.compareSync(password, hashedPassword)) {
-            if (role == 'company') {
-              const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn:'1h'})
-              return res.status(200).json({
-                success: true,
-                msg: 'Login success.',
-                data: result[0],
-                token: token
+    const {username,password} = req.body
+    // const password = req.body.password?req.body.password:''
+    if(!username){
+        res.json({
+            msg : 'Username required'
+        })
+    }else{
+        model
+        .getUser(username)
+        .then(result=>{
+            const role = result[0].role;
+            const validatePassword = bcrypt.compareSync(password, result[0].password)
+            if(!validatePassword){
+                res.json({
+                    message:'Invalid password.'
+                })
+            }else if(role == 'company'){ 
+              jwt.sign({result}, process.env.SECRET_KEY, {expiresIn: '1h'}, (err, token)=>{
+                  res.json({
+                      message:'Company login success..',
+                      data: result[0],
+                      token: token
+                  })
               })
-            } else if (role == 'engineer') {
-              const token = jwt.sign({username}, process.env.ENG_SECRET_KEY, {expiresIn:'1h'})
-              return res.status(200).json({
-                success: true,
-                msg: 'Login success.',
-                data: result[0],
-                token: token
+            } else if(role == 'engineer'){
+              jwt.sign({result}, process.env.ENG_SECRET_KEY, {expiresIn: '1h'}, (err, token)=>{
+                res.json({
+                    message:'Engineer login success..',
+                    data: result[0],
+                    token: token
+                })
               })
             }
-        } else {
-          return res.json({
-            success: false,
-            msg: 'Invalid password.'
-          })
-        }
-      })
-      .catch (err => {
-        //reject
-        console.log(err)
-      })
-  },
+        })
+        .catch(err=>{
+            res.json({err})
+        })
+    }    
+  }
+  //===============
+  //   const {body} = req;
+  //   console.log(body)
+    
+  // {model
+  //   .getUser(body)
+  //   .then (result => {
+  //     //resolve
+  //     // res.json (result)
+
+  //     const {password, username} = req.body;
+  //     const user = {name: username}
+  //     const hashedPassword = result[0].password;
+  //     console.log("hashed ", hashedPassword)
+  //     const role = result[0].role;
+        
+  //     if (bcrypt.compareSync(password, hashedPassword)) {
+  //         if (role == 'company') {
+  //           const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn:'1h'})
+  //           return res.status(200).json({
+  //             success: true,
+  //             msg: 'Login success.',
+  //             data: result[0],
+  //             token: token
+  //           })
+  //         } else if (role == 'engineer') {
+  //           const token = jwt.sign({username}, process.env.ENG_SECRET_KEY, {expiresIn:'1h'})
+  //           return res.status(200).json({
+  //             success: true,
+  //             msg: 'Login success.',
+  //             data: result[0],
+  //             token: token
+  //           })
+  //         }
+  //     } else {
+  //       return res.json({
+  //         success: false,
+  //         msg: 'Invalid password.'
+  //       })
+  //     }
+  //   })}
+  //},
 };
