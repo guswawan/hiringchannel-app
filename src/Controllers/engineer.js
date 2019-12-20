@@ -17,12 +17,12 @@ module.exports = {
       });
   },
   getProfilEngineer: (req, res) => {
-  
+
     model
       .getAllEngineer ()
       .then (result=> {
         //resolve
-        form.success (res, result);
+        form.success (res, result.filter(result => result.id_user == req.id_user.id_user));
       })
       .catch (err => {
         //reject
@@ -55,10 +55,7 @@ module.exports = {
   },
   patchEngineer: (req, res) => {
     const {params, query} = req;
-    // res.json ({
-    //   params,
-    //   query,
-    // });
+ 
     model
       .patchEngineer (query, params)
       .then (result => {
@@ -72,10 +69,7 @@ module.exports = {
   },
   deleteEngineer: (req, res) => {
     const {id} = req.params;
-    // res.json ({
-    //   params,
-    //   query,
-    // });
+ 
     model
       .deleteEngineer (id)
       .then (result => {
@@ -87,46 +81,4 @@ module.exports = {
         console.log (err)
       );
   },
-  // findEngineer: (req, res) => {
-  //   const {query} = req;
-  //   console.log("query ", query)
-  //   // console.log("skill ", skill)
-  //   model
-  //     .findEngineer(query)
-  //     .then(result => {
-  //       console.log("result ",result)
-  //         res.json({result})
-  //     })
-  //     .catch(err => {
-  //         res.json({err})
-  //     })
-  //   },
-  //   // sortEngineer: (req, res) => {
-  //   //   const {query} = req;
-  //   //   console.log("query ", query)
-  //   //   // console.log("skill ", skill)
-  //   //   model
-  //   //     .findEngineer(query)
-  //   //     .then(result => {
-  //   //       console.log("result ",result)
-  //   //         res.json({result})
-  //   //     })
-  //   //     .catch(err => {
-  //   //         res.json({err})
-  //   //     })
-  //   //   },
-  //   pagesEngineer: (req, res) => {
-  //     const {query} = req;
-  //     console.log("query ", query)
-  //     // console.log("skill ", skill)
-  //     // model
-  //     //   .findEngineer(query)
-  //     //   .then(result => {
-  //     //     console.log("result ",result)
-  //     //       res.json({result})
-  //     //   })
-  //     //   .catch(err => {
-  //     //       res.json({err})
-  //     //   })
-  //     },
 };

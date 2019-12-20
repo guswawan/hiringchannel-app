@@ -7,14 +7,9 @@ module.exports = {
   getUser: (req, res) => {
     model
       .getUser ()
-      .then (result => {
-        console.log("result", result)
-        console.log("result", result[1].username)
-        console.log("result1", req.user.username)
-        
+      .then (result => {  
         //resolve
-        // form.success (res, result);
-        
+        form.success (res, result.filter(result => result.id_user == req.id_user.id_user));
       })
       .catch (err => {
         //reject
@@ -23,50 +18,64 @@ module.exports = {
   },
   postUser: (req, res) => {
     const {username, password, role} = req.body;
-    console.log("req body ", req.body)
     const reU = /^[A-Z0-9_-]{4,}$/
-    const hashedPassword = bcrypt.hashSync(password, 8);
-    const user = {username: username, password: hashedPassword, role: role};
-  
-    if (reU.test(username)) {
-
-            model
-            .postUser (user)
-            .then (result => {
-              // resolve
-              
-              res.json (result)
-              // if (result.length == 0) {
-              // } else {
-              //   return res.json({
-              //     msg: 'Username already exist.'
-              //   })
-              // }
+    const reP = /^[a-z0-9_-]{6,}$/
+    
+    model
+      .userCheck(username)
+      .then(resultQuery => {
+        console.log("result ", resultQuery)
+        if (resultQuery.length === 0){
+          if (reU.test(username) == true) {
+              if (reP.test(password) == true){
+                bcrypt.genSalt(8, (err,salt) => {
+                  bcrypt.hash(password, salt, (err, hashedPassword) => {
+                      const data = { username, password: hashedPassword, role }
+        
+                    model
+                      .postUser(data)
+                      .then(result => {
+                          res.status(200).json({
+                              success: true,
+                              msg: 'Registration successfully.',
+                              data: result
+                          })
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            res.status(400).json({
+                                err: err,
+                                success: false,
+                                msg: 'Registration failed.'
+                            })
+                        })
+                      })
+                  })
+              }else{
+                res.json({
+                  msg: 'Invalid password.',
+                })
+              }
+            }else{
+              res.json({
+                msg: 'Invalid username',
+              })
+            } 
+          }else {
+            res.json({
+                status: 400,
+                msg: 'User already exist...'
             })
-            .catch (err =>
-              // reject
-              console.log (err)
-            );
-      // })
-      // } else {
-      //   return res.json({
-      //     msg: 'Password invalid'
-      //   })
-      // }
-    } else {
-      return res.json({
-        err: true,
-        msg: 'Invalid username. Must more than 4 characters & use CAPITAL and/ number'
-      })
-    } 
+            }
+        })
+          .catch(err => {
+              console.log(err)
+        });  
   },
   patchUser: (req, res) => {
     const {params, query} = req;
     query.password = bcrypt.hashSync(query.password, 8);
-    // res.json ({
-    //   params,
-    //   query,
-    // });
+
     model
       .patchUser (query, params)
       .then (result => {
@@ -83,10 +92,7 @@ module.exports = {
   },
   deleteUser: (req, res) => {
     const {id} = req.params;
-    // res.json ({
-    //   params,
-    //   query,
-    // });
+
     model
       .deleteUser (id)
       .then (result => {
@@ -100,9 +106,7 @@ module.exports = {
   },
 
   login: (req, res) => {
-
     const {username,password} = req.body
-    // const password = req.body.password?req.body.password:''
     if(!username){
         res.json({
             msg : 'Username required'
@@ -111,14 +115,18 @@ module.exports = {
         model
         .getUserLogin(username)
         .then(result=>{
+          console.log("RESULT ", result)
+            const id_user = result[0].id_user;
+            console.log("id_user", id_user)
             const role = result[0].role;
-            const validatePassword = bcrypt.compareSync(password, result[0].password)
-            if(!validatePassword){
+            console.log("ROL", role)
+            const comparePass = bcrypt.compareSync(password, result[0].password)
+            if(!comparePass){
                 res.json({
                     message:'Invalid password.'
                 })
             }else if(role == 'company'){ 
-              jwt.sign({result}, process.env.SECRET_KEY, {expiresIn: '1h'}, (err, token)=>{
+              jwt.sign({id_user: id_user}, process.env.SECRET_KEY, {expiresIn: '24h'}, (err, token)=>{
                   res.json({
                       message:'Company login success..',
                       data: result[0],
@@ -126,7 +134,7 @@ module.exports = {
                   })
               })
             } else if(role == 'engineer'){
-              jwt.sign({result}, process.env.SECRET_KEY, {expiresIn: '1h'}, (err, token)=>{
+              jwt.sign({id_user: id_user}, process.env.ENG_SECRET_KEY, {expiresIn: '24h'}, (err, token)=>{
                 res.json({
                     message:'Engineer login success..',
                     data: result[0],
@@ -136,50 +144,11 @@ module.exports = {
             }
         })
         .catch(err=>{
-            res.json({err})
+          console.log(err)
+            res.json({
+              msg: "Invalid username and password."
+            })
         })
     }    
   }
-  //===============
-  //   const {body} = req;
-  //   console.log(body)
-    
-  // {model
-  //   .getUser(body)
-  //   .then (result => {
-  //     //resolve
-  //     // res.json (result)
-
-  //     const {password, username} = req.body;
-  //     const user = {name: username}
-  //     const hashedPassword = result[0].password;
-  //     console.log("hashed ", hashedPassword)
-  //     const role = result[0].role;
-        
-  //     if (bcrypt.compareSync(password, hashedPassword)) {
-  //         if (role == 'company') {
-  //           const token = jwt.sign(user, process.env.SECRET_KEY, {expiresIn:'1h'})
-  //           return res.status(200).json({
-  //             success: true,
-  //             msg: 'Login success.',
-  //             data: result[0],
-  //             token: token
-  //           })
-  //         } else if (role == 'engineer') {
-  //           const token = jwt.sign({username}, process.env.ENG_SECRET_KEY, {expiresIn:'1h'})
-  //           return res.status(200).json({
-  //             success: true,
-  //             msg: 'Login success.',
-  //             data: result[0],
-  //             token: token
-  //           })
-  //         }
-  //     } else {
-  //       return res.json({
-  //         success: false,
-  //         msg: 'Invalid password.'
-  //       })
-  //     }
-  //   })}
-  //},
 };

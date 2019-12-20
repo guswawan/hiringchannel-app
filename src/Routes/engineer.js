@@ -7,7 +7,7 @@ const auth = require ('../Helpers/auth');
 const router = express.Router ();
 
 
-router.get ('/', controller.getAllEngineer); // localhost:5000/engineer/
+router.get ('/', auth.verifyEngineer, auth.verifyEngineer, controller.getAllEngineer); // localhost:5000/engineer/
 router.post ('/', controller.postEngineer); // localhost:5000/engineer/
 router.patch ('/:id', controller.patchEngineer); // localhost:5000/engineer/:id/
 router.delete ('/:id', controller.deleteEngineer); // localhost:5000/engineer/:id/

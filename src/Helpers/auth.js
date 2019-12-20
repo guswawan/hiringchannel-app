@@ -6,9 +6,10 @@ module.exports = {
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401)
     
-    jwt.verify(token, process.env.SECRET_KEY, (err, id) => {
+    jwt.verify(token, process.env.SECRET_KEY, (err, id_user) => {
         if(err) return res.sendStatus(403)
-        req.id = id
+        req.id_user = id_user
+  
         next()
     })
   },
@@ -17,9 +18,10 @@ module.exports = {
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401)
     
-    jwt.verify(token, process.env.ENG_SECRET_KEY, (err, id) => {
+    jwt.verify(token, process.env.ENG_SECRET_KEY, (err, id_user) => {
         if(err) return res.sendStatus(403)
-        req.id = id
+        req.id_user = id_user
+
         next()
     })
   },

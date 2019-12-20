@@ -20,7 +20,7 @@ module.exports = {
     }
 
     if(data.sortBy == 'skill') {
-      sortBy = `ORDER BY COUNT(DISTINCT t_skill.skill_item)`
+      sortBy = `ORDER BY COUNT(DISTINCT t_skill.skill_item)` 
     }
     //  else if (data.sortBy != undefined) {
     //   sortBy = `ORDER BY ${data.sortBy}`
@@ -31,7 +31,10 @@ module.exports = {
     }
 
     return new Promise ((resolve, reject) => {
-      const sql = `SELECT t_engineer.id,t_engineer.name_engineer, t_engineer.description, GROUP_CONCAT(DISTINCT(t_skill.skill_item) SEPARATOR ', ') AS skill, t_engineer.location, t_engineer.birth, t_engineer.date_created, t_engineer.date_updated FROM t_engineer INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id 
+      const sql = `SELECT t_engineer.id,t_engineer.name_engineer, t_engineer.description, 
+      GROUP_CONCAT(DISTINCT(t_skill.skill_item)) AS skill, t_engineer.location, 
+      t_engineer.birth, t_engineer.link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer 
+      INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id 
       ${find} GROUP BY t_engineer.id 
       ${pages} ${sortBy} ${order}`;
       console.log("sql ",sql)
@@ -46,7 +49,7 @@ module.exports = {
   },
   getProfilEngineer: () => {
     return new Promise ((resolve, reject) => {
-      const sql = `SELECT t_engineer.id,t_engineer.name_engineer, t_engineer.description, GROUP_CONCAT(DISTINCT(t_skill.skill_item) SEPARATOR ', ') AS skill, t_engineer.location, t_engineer.birth, GROUP_CONCAT(DISTINCT(t_showcase.showcase_item) SEPARATOR ', ') AS link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id GROUP BY t_engineer.id`;
+      const sql = `SELECT t_engineer.id,t_engineer.name_engineer, t_engineer.description, GROUP_CONCAT(DISTINCT(t_skill.skill_item) SEPARATOR ', ') AS skill, t_engineer.location, t_engineer.birth, t_engineer.link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id GROUP BY t_engineer.id`;
       db.query (sql, (err, result) => {
         if (!err) {
           resolve (result);
