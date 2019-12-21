@@ -11,8 +11,8 @@ Project is created with
 
  ```
     * add db setting to the .env file
-    * npm install
-    * npm run server
+    * $ npm install
+    * $ npm run server
   ```
     
 
