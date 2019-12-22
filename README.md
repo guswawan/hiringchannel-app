@@ -1,6 +1,19 @@
 # API hiringchannel-app
 
-# Technologies
+<p align="center">
+    <img src="https://cdn.pixabay.com/photo/2015/04/23/17/41/node-js-736399_960_720.png" height="120px" width="240px">  
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" height="120px">
+    <img src="hhttps://upload.wikimedia.org/wikipedia/id/a/a9/MySQL.png" height="120px">
+</p>
+
+## Table of Contents
+- [Technologies](#Technologies)
+- [Requirement](#Requirement)
+- [Dependencies](#Dependencies)
+- [Setuo](#Route)
+---
+
+## Technologies
 Project is created with
 
 
@@ -8,7 +21,7 @@ Project is created with
 * Mysql
 
 
-# Requirement
+## Requirement
 
 * CRUD Engineer
 * CRUD Hiring Partner
@@ -19,7 +32,20 @@ Project is created with
 * Login/Register with JWT
 
 
-# Setup
+## Dependencies
+
+| Plugin |
+| ------ |
+| express |
+| mysql |
+| bcryptjs |
+| body-parser |
+| dotenv |
+| jsonwebtoken |
+| morgan |
+
+
+## Setup
 
  ```
     * add db setting to the .env file
