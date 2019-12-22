@@ -12,7 +12,7 @@
 - [Technologies](#Technologies)
 - [Requirement](#Requirement)
 - [Dependencies](#Dependencies)
-- [Setuo](#Route)
+- [Setup](#Setup)
 ---
 
 ## Technologies
