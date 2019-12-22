@@ -5,11 +5,27 @@ module.exports = {
   getAllEngineer: (req, res) => {
     const {name_engineer, skill, limit, page, sorbBy, order} = req.query;
     const data = { name_engineer,skill,limit,page,sorbBy, order };
-    model
-      .getAllEngineer (data)
-      .then (result=> {
+    
+    model.getAllEngineerr ()
+      .then (response=> {
         //resolve
-        form.success (res, result);
+        // form.success (res, response);
+        console.log("respon", response.length)
+          model.getAllEngineer (data)
+          .then (result=> {
+          //resolve
+          res.json({
+            status: 200,
+            msg:'success',
+            countdata: response.length,
+            currentpage: req.query.page, 
+            result
+          })
+          })
+          .catch (err => {
+            //reject
+            console.log (err);
+          });
       })
       .catch (err => {
         //reject
