@@ -19,8 +19,9 @@ module.exports = {
   getProfilEngineer: (req, res) => {
 
     model
-      .getAllEngineer ()
+      .getProfilEngineer ()
       .then (result=> {
+        console.log("result ", req.id_user.id_user)
         //resolve
         form.success (res, result.filter(result => result.id_user == req.id_user.id_user));
       })
@@ -43,7 +44,8 @@ module.exports = {
           birth: body.birth,
           link_showcase: body.link_showcase,
           date_created: new Date(),
-          date_updated: new Date()
+          date_updated: new Date(),
+          id_user: req.body.id_user,
         };
         console.log("data", data)
         form.success (res, data);

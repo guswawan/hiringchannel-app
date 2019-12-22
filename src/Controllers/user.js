@@ -4,12 +4,14 @@ const bcrypt = require ('bcryptjs');
 const jwt = require ('jsonwebtoken');
 
 module.exports = {
-  getUser: (req, res) => {
+getUser: (req, res) => {
     model
       .getUser ()
       .then (result => {  
+        console.log("result", req.id_user)
         //resolve
-        form.success (res, result.filter(result => result.id_user == req.id_user.id_user));
+        form.success(res, result);
+        // form.success (res, result.filter(result => result.id_user == req.id_user.id_user));
       })
       .catch (err => {
         //reject
@@ -74,7 +76,7 @@ module.exports = {
   },
   patchUser: (req, res) => {
     const {params, query} = req;
-    query.password = bcrypt.hashSync(query.password, 8);
+    // query.password = bcrypt.hashSync(query.password, 8);
 
     model
       .patchUser (query, params)

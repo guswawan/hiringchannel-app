@@ -22,16 +22,16 @@ module.exports = {
     if(data.sortBy == 'skill') {
       sortBy = `ORDER BY COUNT(DISTINCT t_skill.skill_item)` 
     }
-    //  else if (data.sortBy != undefined) {
-    //   sortBy = `ORDER BY ${data.sortBy}`
-    // }
+     else if (data.sortBy != undefined) {
+      sortBy = `ORDER BY ${data.sortBy}`
+    }
 
     if(data.order != undefined) {
       order = `ORDER BY ${data.order}`
     }
 
     return new Promise ((resolve, reject) => {
-      const sql = `SELECT t_engineer.id,t_engineer.name_engineer, t_engineer.description, 
+      const sql = `SELECT t_engineer.id,t_engineer.id_user, t_engineer.name_engineer, t_engineer.description, 
       GROUP_CONCAT(DISTINCT(t_skill.skill_item)) AS skill, t_engineer.location, 
       t_engineer.birth, t_engineer.link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer 
       INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id 
@@ -49,7 +49,10 @@ module.exports = {
   },
   getProfilEngineer: () => {
     return new Promise ((resolve, reject) => {
-      const sql = `SELECT t_engineer.id,t_engineer.name_engineer, t_engineer.description, GROUP_CONCAT(DISTINCT(t_skill.skill_item) SEPARATOR ', ') AS skill, t_engineer.location, t_engineer.birth, t_engineer.link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id GROUP BY t_engineer.id`;
+      const sql = `SELECT t_engineer.id,t_engineer.id_user, t_engineer.name_engineer, t_engineer.description, 
+      GROUP_CONCAT(DISTINCT(t_skill.skill_item)) AS skill, t_engineer.location, 
+      t_engineer.birth, t_engineer.link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer 
+      INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id GROUP BY t_engineer.id `;
       db.query (sql, (err, result) => {
         if (!err) {
           resolve (result);
@@ -64,8 +67,8 @@ module.exports = {
       //console.log("body ",body)
       const date_created = new Date();
       const date_updated = new Date();
-      const values = [body.name_engineer,body.description,body.location,body.birth, body.link_showcase, date_created,date_updated];
-      const sql = 'INSERT INTO t_engineer (name_engineer,description,location,birth,link_showcase,date_created,date_updated) VALUES ( ? )';
+      const values = [body.name_engineer,body.description,body.location,body.birth, body.link_showcase, date_created,date_updated, body.id_user];
+      const sql = 'INSERT INTO t_engineer (name_engineer,description,location,birth,link_showcase,date_created,date_updated, id_user) VALUES ( ? )';
       // console.log("values", values);
       db.query (sql, [values], (err, result) => {
           if (!err) {

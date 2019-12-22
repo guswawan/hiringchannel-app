@@ -1,17 +1,18 @@
 const express = require ('express');
 const controller = require ('../Controllers/engineer');
 const controller_skill = require ('../Controllers/skill');
-const controller_showcase = require ('../Controllers/showcase');
 const auth = require ('../Helpers/auth');
 
 const router = express.Router ();
 
 
-router.get ('/', auth.verifyEngineer, auth.verifyEngineer, controller.getAllEngineer); // localhost:5000/engineer/
+router.get ('/', auth.verifyEngineer, controller.getAllEngineer); // localhost:5000/engineer/
+router.get ('/profile', auth.verifyEngineer, controller.getProfilEngineer);
 router.post ('/', controller.postEngineer); // localhost:5000/engineer/
 router.patch ('/:id', controller.patchEngineer); // localhost:5000/engineer/:id/
 router.delete ('/:id', controller.deleteEngineer); // localhost:5000/engineer/:id/
 
+//CATATAN JADIKAN SATU ENDPOINT SKILLNYA KE ENDPOINT PROFIL. ATAU METFHODNYA JADIKAN SATU
 
 //SKILL
 router.get ('/skill', controller_skill.getSkillEngineer);

@@ -12,10 +12,10 @@ module.exports = {
       });
     });
   },
-  getCompany: (id) => {
+  getCompany: () => {
     return new Promise ((resolve, reject) => {
-      const sql = 'SELECT * FROM t_company WHERE id=?';
-      db.query (sql, id,(err, result) => {
+      const sql = 'SELECT * FROM t_company';
+      db.query (sql,(err, result) => {
         if (!err) {
           resolve (result);
         } else {
@@ -26,8 +26,8 @@ module.exports = {
   },
   postCompany: body => {
     return new Promise ((resolve, reject) => {
-      const values = [body.name_company,body.logo,body.location,body.description];
-      const sql = 'INSERT INTO t_company (name_company,logo,location,description) VALUES ( ? )';
+      const values = [body.name_company,body.logo,body.location,body.description,body.id_user];
+      const sql = 'INSERT INTO t_company (name_company,logo,location,description, id_user) VALUES ( ? )';
       // console.log("values", values)
       db.query (sql,[values], (err, result) => {
           if (!err) {

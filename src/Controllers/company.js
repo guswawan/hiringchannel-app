@@ -15,13 +15,12 @@ module.exports = {
         console.log (err);
       });
   },
-  //kunune byid
-  getCompany: (_, res) => {
+  getProfileCompany: (req, res) => {
     model
       .getCompany ()
       .then (result => {
         //resolve
-        form.success (res, result);
+        form.success (res, result.filter(result => result.id_user == req.id_user.id_user));
         
       })
       .catch (err => {
@@ -40,7 +39,8 @@ module.exports = {
           name_company: body.name_company,
           logo: body.logo,
           location: body.location,
-          description: body.description
+          description: body.description,
+          id_user: body.id_user
         };
         console.log("data", data)
         form.success (res, data);
