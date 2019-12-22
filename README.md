@@ -30,7 +30,7 @@ Project is created with
 * Search Engineer by name and skill
 * Sort Engineer by name, skill, date updated
 * Pagination in Engineer list
-* Usee Environment Variable
+* Use Environment Variable
 * Login/Register with JWT
 
 
@@ -50,6 +50,7 @@ Project is created with
 ## Setup
 
  ```
+    * $ git clone
     * add db setting to the .env file
     * $ npm install
     * $ npm run server
