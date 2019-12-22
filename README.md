@@ -3,7 +3,6 @@
 <p align="center">
     <img src="https://cdn.pixabay.com/photo/2015/04/23/17/41/node-js-736399_960_720.png" height="80px" width="160px">  
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" height="80px" width="160px>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" height="80px" width="160px>
 </p>
 
 
