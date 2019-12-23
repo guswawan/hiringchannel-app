@@ -5,8 +5,8 @@ const auth = require ('../Helpers/auth');
 const router = express.Router ();
 
 
-router.get ('/', auth.verifyEngineer, controller.getAllEngineer); // localhost:5000/engineer/
-router.get ('/profile', auth.verifyEngineer, controller.getProfilEngineer); // localhost:5000/engineer/profile
+router.get ('/'/*, auth.verifyEngineer*/, controller.getAllEngineer); // localhost:5000/engineer/
+//router.get ('/profile', auth.verifyEngineer, controller.getProfilEngineer); // localhost:5000/engineer/profile
 router.get ('/skill', controller.getSkillEngineer); // localhost:5000/engineer/skill
 router.post ('/', controller.postEngineer); // localhost:5000/engineer/
 router.post ('/skill/:id', controller.postSkillEngineer); // localhost:5000/engineer/skill/:id_engineer/

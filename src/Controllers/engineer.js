@@ -2,6 +2,21 @@ const model = require ('../Models/engineer');
 const form = require ('../Helpers/form');
 
 module.exports = {
+  //Ver.1
+  // getAllEngineer: (req, res) => {
+  //   const {query} = req;
+    
+  //   model.getAllEngineer (query)
+  //     .then (response=> {
+  //       //resolve
+  //       form.success (res, response);
+  //     })
+  //     .catch (err => {
+  //       //reject
+  //       console.log (err);
+  //     });
+  // },
+  //Ver.2
   getAllEngineer: (req, res) => {
     const {name_engineer, skill, limit, page, sorbBy, order} = req.query;
     const data = { name_engineer,skill,limit,page,sorbBy, order };

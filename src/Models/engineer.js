@@ -1,6 +1,59 @@
 const db = require ('../Configs/db');
 
 module.exports = {
+  //Ver1
+  // getAllEngineer: (query) => {
+
+  //   var sort = query.sort || 'ASC';
+  //   var limit = query.limit || 2;
+  //   var page = query.page || 1;
+  //   var offset = (page-1)*limit;
+
+  //   return new Promise ((resolve, reject) => {
+  //     db.query (`SELECT COUNT(*) AS count FROM t_engineer`, (err, response) => {
+  //       if(!err) {
+  //         const countPage = Math.ceil(response[0].count/limit);
+  //         const sql = `SELECT t_engineer.id,t_engineer.id_user, t_engineer.name_engineer, t_engineer.description, 
+  //     GROUP_CONCAT(DISTINCT(t_skill.skill_item)) AS skill, t_engineer.location, 
+  //     t_engineer.birth, t_engineer.link_showcase, t_engineer.date_created, t_engineer.date_updated FROM \`t_engineer\` 
+  //     INNER JOIN \`t_skill\` ON \`t_skill\`.\`id_engineer\` = t_engineer.id 
+  //     GROUP BY t_engineer.id 
+  //     ORDER BY \`t_engineer\`.\`name_engineer\` ${sort}, \`skill\` ${sort}, \`date_updated\` ${sort} LIMIT ${limit} OFFSET ${offset}`;
+      
+  //     db.query (sql, (err, response, field) => {
+  //       if (!err) {
+  //         var next = []
+  //         var prev = []
+  //         if(next > countPage){
+  //           next = countPage
+  //         }
+  //         for (i = parseInt(page)+1; 1<= countPage; i++){
+  //           next.push(i)
+  //         }
+  //         for (i = parseInt(page)-1; 1 >= 1; i--){
+  //           prev.push(i)
+  //         }
+  //         response = {
+  //           countPage: countPage,
+  //           prevPage: prev.length,
+  //           currentPage: parseInt(page),
+  //           nextPage: next.length,
+  //           response
+  //         }
+  //         resolve (result);
+  //       } else {
+  //         reject (err);
+  //       }
+  //     });
+
+  //       } else {
+  //         reject (err)
+  //       }
+  //     }) 
+      
+  //   });
+  // },
+  //Ver2
   getAllEngineer: data => {
 
     var pages = ``
