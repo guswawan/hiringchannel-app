@@ -18,7 +18,8 @@ module.exports = {
             status: 200,
             msg:'success',
             countdata: response.length,
-            currentpage: req.query.page, 
+            currentpage: req.query.page + " From " + Math.ceil(response.length / req.query.limit) + " pages",
+            //previous: response.length-currentpage, 
             result
           })
           })
