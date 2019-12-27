@@ -26,6 +26,8 @@ module.exports = {
         //resolve
         // form.success (res, response);
         console.log("respon", response.length)
+        console.log("req query ", req.query.limit)
+        console.log("Math ceil", Math.ceil(response.length / req.query.limit))
           model.getAllEngineer (data)
           .then (result=> {
           //resolve
@@ -56,6 +58,20 @@ module.exports = {
         console.log("result ", req.id_user.id_user)
         //resolve
         form.success (res, result.filter(result => result.id_user == req.id_user.id_user));
+      })
+      .catch (err => {
+        //reject
+        console.log (err);
+      });
+  },
+  getEngineerbyId: (req, res) => {
+    const { id } = req.query
+
+    model
+      .getEngineerbyId (id)
+      .then (result=> {
+        //resolve
+        res.json(result)
       })
       .catch (err => {
         //reject

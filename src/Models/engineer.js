@@ -56,7 +56,7 @@ module.exports = {
   //Ver2
   getAllEngineer: data => {
 
-    var pages = ``
+    var pages = ''
     var find = ''
     var sortBy = ''
     var order = ''
@@ -121,6 +121,21 @@ module.exports = {
       t_engineer.birth, t_engineer.link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer 
       INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id GROUP BY t_engineer.id `;
       db.query (sql, (err, result) => {
+        if (!err) {
+          resolve (result);
+        } else {
+          reject (err);
+        }
+      });
+    });
+  },
+  getEngineerbyId: (id) => {
+    return new Promise ((resolve, reject) => {
+      const sql = `SELECT t_engineer.id,t_engineer.id_user, t_engineer.name_engineer, t_engineer.description, 
+      GROUP_CONCAT(DISTINCT(t_skill.skill_item)) AS skill, t_engineer.location, 
+      t_engineer.birth, t_engineer.link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer 
+      INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id WHERE t_engineer.id = ${id}`;
+      db.query (sql,(err, result) => {
         if (!err) {
           resolve (result);
         } else {

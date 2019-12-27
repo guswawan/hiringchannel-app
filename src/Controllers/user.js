@@ -54,23 +54,30 @@ getUser: (req, res) => {
                       })
                   })
               }else{
-                res.json({
+                res.status(401).json({
+                  success: false,
                   msg: 'Invalid password.',
                 })
               }
             }else{
-              res.json({
+              res.status(401).json({
+                success: false,
                 msg: 'Invalid username',
               })
             } 
           }else {
-            res.json({
-                status: 400,
+            res.status(401).json({
+                // status: 400,
+                success: false,
                 msg: 'User already exist...'
             })
             }
         })
           .catch(err => {
+            res.json({
+              success: false,
+              err: err
+            })
               console.log(err)
         });  
   },
@@ -110,7 +117,8 @@ getUser: (req, res) => {
   login: (req, res) => {
     const {username,password} = req.body
     if(!username){
-        res.json({
+        res.status(403).json({
+            success: false,
             msg : 'Username required'
         })
     }else{
@@ -124,12 +132,14 @@ getUser: (req, res) => {
             console.log("ROL", role)
             const comparePass = bcrypt.compareSync(password, result[0].password)
             if(!comparePass){
-                res.json({
+                res.status(403).json({
+                    success: false,
                     message:'Invalid password.'
                 })
             }else if(role == 'company'){ 
               jwt.sign({id_user: id_user}, process.env.SECRET_KEY, {expiresIn: '24h'}, (err, token)=>{
-                  res.json({
+                  res.status(200).json({
+                      success: true,
                       message:'Company login success..',
                       data: result[0],
                       token: token
@@ -137,7 +147,8 @@ getUser: (req, res) => {
               })
             } else if(role == 'engineer'){
               jwt.sign({id_user: id_user}, process.env.ENG_SECRET_KEY, {expiresIn: '24h'}, (err, token)=>{
-                res.json({
+                res.status(200).json({
+                    success: true,
                     message:'Engineer login success..',
                     data: result[0],
                     token: token
@@ -147,7 +158,8 @@ getUser: (req, res) => {
         })
         .catch(err=>{
           console.log(err)
-            res.json({
+            res.status(403).json({
+              success: false,
               msg: "Invalid username and password."
             })
         })
