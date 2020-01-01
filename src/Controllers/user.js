@@ -45,7 +45,7 @@ getUser: (req, res) => {
                         })
                         .catch(err => {
                             console.log(err)
-                            res.status(400).json({
+                            res.json({
                                 err: err,
                                 success: false,
                                 msg: 'Registration failed.'
@@ -54,19 +54,19 @@ getUser: (req, res) => {
                       })
                   })
               }else{
-                res.status(401).json({
+                res.json({
                   success: false,
                   msg: 'Invalid password.',
                 })
               }
             }else{
-              res.status(401).json({
+              res.json({
                 success: false,
                 msg: 'Invalid username',
               })
             } 
           }else {
-            res.status(401).json({
+            res.json({
                 // status: 400,
                 success: false,
                 msg: 'User already exist...'

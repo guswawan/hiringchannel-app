@@ -72,15 +72,14 @@ module.exports = {
       find = `WHERE t_skill.skill_item LIKE '%${data.skill}%'`
     }
 
-    if(data.sortBy == 'skill') {
-      sortBy = `ORDER BY COUNT(DISTINCT t_skill.skill_item)` 
-    }
-     else if (data.sortBy != undefined) {
-      sortBy = `ORDER BY ${data.sortBy}`
+    if(data.sort_by == 'skill'){
+      sort_by = `ORDER BY COUNT(DISTINCT skill.skill_name)`
+    }else if(data.sort_by != undefined){
+      sort_by = `ORDER BY ${data.sort_by}`
     }
 
-    if(data.order != undefined) {
-      order = `ORDER BY ${data.order}`
+    if(data.order != undefined){
+      order = `${data.order}`
     }
 
     return new Promise ((resolve, reject) => {
@@ -90,7 +89,7 @@ module.exports = {
       t_engineer.birth, t_engineer.link_showcase, t_engineer.date_created, t_engineer.date_updated FROM t_engineer 
       INNER JOIN t_skill ON t_skill.id_engineer = t_engineer.id 
       ${find} GROUP BY t_engineer.id 
-      ${pages} ${sortBy} ${order}`;
+      ${sortBy} ${order} ${pages} `;
       
       db.query (sql, (err, result) => {
         if (!err) {
