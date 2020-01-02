@@ -6,7 +6,7 @@ const router = express.Router ();
 
 
 router.get ('/', auth.verifyCompany, controller.getAllEngineer); // localhost:5000/v1/engineer/
-router.get ('/id', controller.getEngineerbyId);
+router.get ('/:id', controller.getEngineerbyId);
 router.get ('/profile', auth.verifyEngineer, controller.getProfilEngineer); // localhost:5000/engineer/profile
 router.get ('/skill', controller.getSkillEngineer); // localhost:5000/engineer/skill
 router.post ('/', controller.postEngineer); // localhost:5000/engineer/
