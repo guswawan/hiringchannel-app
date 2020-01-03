@@ -24,7 +24,7 @@ module.exports = {
       // const date_created = new Date();
       // const date_updated = new Date();
       const values = [body.name_project, body.id_engineer, body.id_company, body.status_project, body.status_engineer];
-      const sql = `INSERT INTO t_project (name_project, id_company, id_engineer, status_project, status_engineer) VALUES ( ? )`;
+      const sql = `INSERT INTO t_project SET ?`;
       console.log("values", values);
       db.query (sql,[values] ,(err, result) => {
           if (!err) {

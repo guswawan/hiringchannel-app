@@ -65,7 +65,8 @@ module.exports = {
       });
   },
   getEngineerbyId: (req, res) => {
-    const { id } = req.query
+    const id = req.params.id
+    console.log("IKI ID ", id)
 
     model
       .getEngineerbyId (id)
@@ -147,10 +148,10 @@ module.exports = {
   },
   postSkillEngineer: (req, res) => {
     const {params} = req;
-    const {body} = req;
+    const {query} = req;
 
     model
-      .postSkillEngineer (body, params)
+      .postSkillEngineer (query, params)
       .then (result => {
         //resolve
         res.json(result)

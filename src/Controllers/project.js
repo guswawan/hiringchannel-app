@@ -16,9 +16,10 @@ module.exports = {
       });
   },
   postProject: (req, res) => {
-    const {body} = req;
+    const {name_project,} = req.body;
+    const data = {body}
     model
-      .postProject (body)
+      .postProject (data)
       .then (result => {
         //resolve
         const data = {
