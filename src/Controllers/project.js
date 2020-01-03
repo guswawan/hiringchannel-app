@@ -16,15 +16,20 @@ module.exports = {
       });
   },
   postProject: (req, res) => {
-    const {name_project,} = req.body;
-    const data = {body}
+    const {body} = req;
+    // const data = {name_project}
     model
-      .postProject (data)
+      .postProject (body)
       .then (result => {
         //resolve
         const data = {
           id_project: result.insertId,
           name_project: body.name_project,
+          id_company: body.id_company,
+          id_engineer: body.id_engineer,
+          name_project: body.name_project,
+          status_project: body.status_project,
+          status_engineer: body.status_engineer
         };
         console.log("data", data)
         form.success (res, data);
