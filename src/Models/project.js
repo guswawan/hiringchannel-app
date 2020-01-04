@@ -39,6 +39,7 @@ module.exports = {
   patchProject: (query, params) => {
     return new Promise ((resolve, reject) => {
       const sql = "UPDATE t_project SET ? WHERE ?";
+      // const sql1 = `UPDATE t_project SET status_project='${query.status_project}' WHERE id_project='${params.id_project}' AND id_engineer='${params.id_engineer}'`
       db.query (sql, [query, params], (err, result) => {
           if (!err) {
             resolve (result);
